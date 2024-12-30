@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        main {
+            padding: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 0.5rem;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        .form-container {
+            margin-top: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-group button {
+            padding: 0.5rem 1rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestión de Pedidos</h1>
+    </header>
+    <main>
+        <h2>Lista de Pedidos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre del Cliente</th>
+                    <th>Artículos</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="orderTableBody">
+                <!-- Aquí se insertarán las filas de pedidos dinámicamente -->
+            </tbody>
+        </table>
+
+        <div class="form-container">
+            <h2>Añadir Pedido</h2>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label for="customerName">Nombre del Cliente</label>
+                    <input type="text" id="customerName" name="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="items">Artículos (separados por coma)</label>
+                    <input type="text" id="items" name="items" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Añadir Pedido</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script>
+        const orders = [
+            { id: 1, customerName: 'Nicolás Reyes', items: ['item1', 'item2'], status: 'Pending' },
+            { id: 2, customerName: 'Juan Perez', items: ['item3'], status: 'Shipped' },
+        ];
+
+        function renderOrders() {
+            const tableBody = document.getElementById('orderTableBody');
+            tableBody.innerHTML = '';
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.items.join(', ')}</td>
+                    <td>${order.status}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const customerName = document.getElementById('customerName').value;
+            const items = document.getElementById('items').value.split(',');
+
+            const newOrder = {
+                id: orders.length + 1,
+                customerName,
+                items,
+                status: 'Pending'
+            };
+
+            orders.push(newOrder);
+            renderOrders();
+            e.target.reset();
+        });
+
+        renderOrders();
+    </script>
+</body>
+</html>
